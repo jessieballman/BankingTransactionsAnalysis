@@ -30,7 +30,20 @@ SELECT transaction_id, ARRAY_AGG(suspicious) AS suspicious FROM(
     ON c.customer_id = a.customer_id
     JOIN timezones tz
     ON tz.city = c.city AND tz.country = c.country
-    JOIN (SELECT account_id, percentile_cont(0.50) WITHIN GROUP (ORDER BY amount) AS median_amount FROM transactions GROUP BY account_id) ma
+    JOIN (
+        SELECT 
+            t.account_id, 
+            percentile_cont(0.50) WITHIN GROUP (ORDER BY CASE
+                WHEN currency = 'USD' THEN amount
+                WHEN currency = 'EUR' THEN amount*1.12
+                WHEN currency = 'GBP' THEN amount*1.34
+            END) AS median_amount 
+        FROM transactions t
+        JOIN accounts a
+        ON a.account_id = t.account_id
+        JOIN customers c
+        ON c.customer_id = a.customer_id
+        GROUP BY t.account_id) ma
     ON ma.account_id = t.account_id
     WHERE EXTRACT(HOUR FROM posted_at AT TIME ZONE timezone) BETWEEN 0 AND 6 
     AND
