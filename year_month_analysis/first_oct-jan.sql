@@ -32,7 +32,7 @@ SELECT
     ROUND(COUNT(*) FILTER (WHERE category = 'groceries')/COUNT(*)::numeric*100,2) AS groceries_part,
     ROUND(COUNT(*) FILTER (WHERE category = 'entertainment')/COUNT(*)::numeric*100,2) AS entertainment_part,
     ROUND(COUNT(*) FILTER (WHERE category = 'travel')/COUNT(*)::numeric*100,2) AS travel_part,
-    COUNT(*) FILTER (WHERE joined_on > '2024-10-01' AND joined_on < '2025-01-01')::numeric/('2025-01-01'::date - '2024-10-01'::date)::numeric AS new_customers_per_day,
+    COUNT(DISTINCT c.customer_id) FILTER (WHERE joined_on > '2024-10-01' AND joined_on < '2025-01-01')::numeric/('2025-01-01'::date - '2024-10-01'::date)::numeric AS new_customers_per_day,
 
     -- Risk Bands
     ROUND(((COUNT(*) FILTER (WHERE risk_band = 'high'))/COUNT(*)::numeric)*100,2) AS high_risk,
@@ -111,7 +111,7 @@ SELECT
     ROUND(COUNT(*) FILTER (WHERE category = 'groceries')/COUNT(*)::numeric*100,2) AS groceries_part,
     ROUND(COUNT(*) FILTER (WHERE category = 'entertainment')/COUNT(*)::numeric*100,2) AS entertainment_part,
     ROUND(COUNT(*) FILTER (WHERE category = 'travel')/COUNT(*)::numeric*100,2) AS travel_part,
-    COUNT(*) FILTER (WHERE joined_on < '2024-10-01' OR (joined_on > '2025-01-01' AND joined_on < '2025-10-01'))::numeric/(('2025-10-01'::date - MIN(joined_on)-('2025-01-01'::date - '2024-10-01'::date)))::numeric AS new_customers_per_day,
+    COUNT(DISTINCT c.customer_id) FILTER (WHERE joined_on < '2024-10-01' OR (joined_on > '2025-01-01' AND joined_on < '2025-10-01'))::numeric/(('2025-10-01'::date - MIN(joined_on)-('2025-01-01'::date - '2024-10-01'::date)))::numeric AS new_customers_per_day,
 
     -- Risk Bands
     ROUND(((COUNT(*) FILTER (WHERE risk_band = 'high'))/COUNT(*)::numeric)*100,2) AS high_risk,
