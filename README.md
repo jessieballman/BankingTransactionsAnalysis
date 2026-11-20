@@ -1,6 +1,6 @@
 # Project Overview
 
-This was an git remote add origin [https://github.com/jessieballman/BankingTransactionsAnalysis.git](https://github.com/jessieballman/BankingTransactionsAnalysis.git) that examined:
+This is an end-to-end data analysis project that examines:
 
 - Transaction trends over the entire time period.
 - The breakdown of categories, channels, and transaction types.
@@ -59,7 +59,7 @@ Prepare an analytical report containing visualizations, comparative tables, and 
 
 ## Tools
 
-- **Language:** Python 3.12
+- **Language:** Python 3.14
 - **Data Processing & Analysis:** Pandas, NumPy
 - **Visualization:** Matplotlib, Seaborn, fontTools
 - **Database & Queries:** PostgreSQL, SQL, sqlalchemy
